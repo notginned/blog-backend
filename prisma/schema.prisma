@@ -12,3 +12,46 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id             Int       @id @default(autoincrement())
+  username       String    @unique @db.VarChar(25)
+  password       String
+  profilePicture String
+  role           Role      @relation(fields: [role_type], references: [type])
+  role_type      String
+  comments       Comment[]
+  posts          Post[]
+}
+
+model Role {
+  type        String  @id
+  canPost     Boolean
+  canView     Boolean
+  canComment  Boolean
+  canModerate Boolean
+  users       User[]
+}
+
+model Post {
+  id          Int       @id @default(autoincrement())
+  author      User      @relation(fields: [authorId], references: [id])
+  authorId    Int       @unique
+  createdAt   DateTime  @default(now())
+  modifiedAt  DateTime
+  title       String
+  body        String
+  comments    Comment[]
+  isPublished Boolean
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  author     User     @relation(fields: [authorId], references: [id])
+  authorId   Int
+  createdAt  DateTime @default(now())
+  modifiedAt DateTime
+  post       Post     @relation(fields: [postId], references: [id])
+  postId     Int
+  body       String
+}
