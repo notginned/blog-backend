@@ -1,23 +1,13 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "username" VARCHAR(25) NOT NULL,
+    "password" TEXT NOT NULL,
+    "profilePicture" TEXT NOT NULL,
+    "role_type" TEXT NOT NULL,
 
-  - You are about to drop the column `name` on the `User` table. All the data in the column will be lost.
-  - A unique constraint covering the columns `[username]` on the table `User` will be added. If there are existing duplicate values, this will fail.
-  - Added the required column `password` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `profilePicture` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `role_type` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `username` to the `User` table without a default value. This is not possible if the table is not empty.
-
-*/
--- AlterTable
-CREATE SEQUENCE user_id_seq;
-ALTER TABLE "User" DROP COLUMN "name",
-ADD COLUMN     "password" TEXT NOT NULL,
-ADD COLUMN     "profilePicture" TEXT NOT NULL,
-ADD COLUMN     "role_type" TEXT NOT NULL,
-ADD COLUMN     "username" VARCHAR(25) NOT NULL,
-ALTER COLUMN "id" SET DEFAULT nextval('user_id_seq');
-ALTER SEQUENCE user_id_seq OWNED BY "User"."id";
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Role" (
@@ -56,10 +46,10 @@ CREATE TABLE "Comment" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Post_authorId_key" ON "Post"("authorId");
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
+CREATE UNIQUE INDEX "Post_authorId_key" ON "Post"("authorId");
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_role_type_fkey" FOREIGN KEY ("role_type") REFERENCES "Role"("type") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -17,7 +17,7 @@ model User {
   id             Int       @id @default(autoincrement())
   username       String    @unique @db.VarChar(25)
   password       String
-  profilePicture String
+  profilePicture String?
   role           Role      @relation(fields: [role_type], references: [type])
   role_type      String
   comments       Comment[]
@@ -42,7 +42,7 @@ model Post {
   title       String
   body        String
   comments    Comment[]
-  isPublished Boolean
+  isPublished Boolean   @default(false)
 }
 
 model Comment {
